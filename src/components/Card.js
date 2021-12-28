@@ -1,21 +1,19 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, Dimensions} from 'react-native';
-import {IMAGE_URL} from '../config'
-import Favorite from "../icons/Favorite";
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {IMAGE_URL} from '../config';
+import FavoriteButton from "./FavoriteButton";
 
-const Card = ({title, overview, poster_path,  onPress}) => {
+const Card = ({title, overview, poster_path,  onPress, onPressFavorite}) => {
     return(
-        <View style={styles.card}>
+        <TouchableOpacity onPress={onPress} style={styles.card}>
             <View style={styles.container}>
                 <Text style={styles.titleText}>{title}</Text>
                 <View style={styles.line} />
                 <Text numberOfLines={3} style={styles.descriptionText}>{overview}</Text>
             </View>
             <Image source={{uri: `${IMAGE_URL}${poster_path}`}} style={styles.image} />
-            <TouchableOpacity>
-                <Favorite  />
-            </TouchableOpacity>
-        </View>
+            <FavoriteButton style={styles.favoriteButton} onPress={onPressFavorite} />
+        </TouchableOpacity>
     );
 }
 
@@ -25,7 +23,6 @@ const styles = StyleSheet.create({
         height: 185,
         marginTop: 20,
         borderRadius: 8,
-        backgroundColor: 'red',
     },
     image: {
         marginLeft: 15,
@@ -34,7 +31,7 @@ const styles = StyleSheet.create({
         width: 120,
     },
     container: {
-        backgroundColor: '#666262',
+        backgroundColor: '#555353',
         borderRadius: 5,
         height: 150,
         marginTop:  35,
@@ -56,6 +53,11 @@ const styles = StyleSheet.create({
     descriptionText: {
         color: 'white',
         fontSize: 13,
+    },
+    favoriteButton: {
+        position: 'absolute',
+        right: 8,
+        top: 20,
     },
 });
 

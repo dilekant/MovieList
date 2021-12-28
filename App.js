@@ -12,7 +12,7 @@ function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
           <Stack.Screen name="MovieList" component={MovieListScreen} options={{title: 'Movie List'}} />
-          <Stack.Screen name="MovieDetail" component={MovieDetailScreen} options={{title: 'Movie Detail'}} />
+          <Stack.Screen name="MovieDetail" component={MovieDetailScreen} options={{title: null, headerTintColor: '#ffffff'}} />
           <Stack.Screen name="Favorites" component={FavoritesScreen} />
         </Stack.Navigator>
       </NavigationContainer>

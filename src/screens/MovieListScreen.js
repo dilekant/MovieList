@@ -23,12 +23,10 @@ const MovieListScreen = ({navigation}) => {
     }, []);
 
     const getMovie = () => {
-        console.log('get axios');
         let url = `${BASE_URL}movie/popular?api_key=${API_KEY}`;
         axios
             .get(url)
             .then(response => {
-                console.log(response.data.results);
                 setMovies(response.data.results);
             })
             .catch(error => {
@@ -45,7 +43,12 @@ const MovieListScreen = ({navigation}) => {
                 showsVerticalScrollIndicator={false}
                 keyExtractor={(item) => item.id}
                 renderItem={({item, index}) => (
-                    <Card {...item} key={index} onPress={() => navigation.navigate('MovieDetail', {id: item.id})} />
+                    <Card
+                        {...item}
+                        key={index}
+                        onPress={() => navigation.navigate('MovieDetail', {id: item.id})}
+                        onPressFavorite={() => console.log('likeee')}
+                    />
                 )}
             />
         </View>
