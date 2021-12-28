@@ -4,8 +4,10 @@ import axios from "axios";
 import Card from "../components/Card";
 import {API_KEY, BASE_URL} from "../config";
 import Favorite from "../icons/Favorite";
+import {addFavorites, deleteFavorites} from '../actions/counterActions';
+import {connect} from "react-redux";
 
-const MovieListScreen = ({navigation}) => {
+const MovieListScreen = ({navigation, favorites, addFavorites, deleteFavorites}) => {
     const [movies, setMovies] = useState([]);
     const [nextPageLoading, setNextPageLoading] = useState(false);
     const [lastPageApi, setLastPageApi] = useState(false);
@@ -31,7 +33,6 @@ const MovieListScreen = ({navigation}) => {
         axios
             .get(url)
             .then(response => {
-                setMovies(response.data.results);
                 if (loadMore === true) {
                     setMovies(movies.concat(response.data.results));
                 } else {
@@ -68,6 +69,12 @@ const MovieListScreen = ({navigation}) => {
         );
     }
 
+    const handleAddFavorite = (item) => {
+        item.check != !item.check;
+        addFavorites(item);
+        //deleteFavorites(id);
+    }
+
     return (
         <View style={styles.container}>
             <FlatList
@@ -81,7 +88,7 @@ const MovieListScreen = ({navigation}) => {
                         {...item}
                         key={index}
                         onPress={() => navigation.navigate('MovieDetail', {id: item.id})}
-                        onPressFavorite={() => console.log('likeee')}
+                        onPressFavorite={() => handleAddFavorite(item)}
                     />
                 )}
                 onEndReached={loadMore}
@@ -105,4 +112,12 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MovieListScreen;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        favorites: state.counterReducer.favorites,
+    }
+}
+
+const mapDispatchToProps = {addFavorites, deleteFavorites};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieListScreen);
