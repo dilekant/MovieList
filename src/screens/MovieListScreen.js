@@ -1,5 +1,5 @@
 import React, {useEffect, useLayoutEffect, useState} from "react";
-import {ActivityIndicator, FlatList, Platform, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, FlatList, Platform, StyleSheet, TouchableOpacity, View} from "react-native";
 import axios from "axios";
 import Card from "../components/Card";
 import {API_KEY, BASE_URL} from "../config";
@@ -8,7 +8,6 @@ import Favorite from "../icons/Favorite";
 const MovieListScreen = ({navigation}) => {
     const [movies, setMovies] = useState([]);
     const [nextPageLoading, setNextPageLoading] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [lastPageApi, setLastPageApi] = useState(false);
     const [lastPage, setLastPage] = useState(1);
 
@@ -28,7 +27,6 @@ const MovieListScreen = ({navigation}) => {
     }, []);
 
     const getMovie = (page = 1, loadMore = false) => {
-        setLoading(!loadMore);
         let url = `${BASE_URL}movie/popular?api_key=${API_KEY}&page=${page}`;
         axios
             .get(url)
@@ -42,7 +40,6 @@ const MovieListScreen = ({navigation}) => {
                 if (response.data.count === 0) {
                     setLastPageApi(true);
                 }
-                setLoading(false);
                 setLastPage(page);
                 setNextPageLoading(false);
             })
