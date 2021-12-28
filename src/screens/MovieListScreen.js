@@ -1,18 +1,23 @@
 import React, {useEffect, useLayoutEffect, useState} from "react";
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, FlatList, Platform, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import axios from "axios";
 import Card from "../components/Card";
 import {API_KEY, BASE_URL} from "../config";
+import Favorite from "../icons/Favorite";
 
 const MovieListScreen = ({navigation}) => {
     const [movies, setMovies] = useState([]);
+    const [nextPageLoading, setNextPageLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [lastPageApi, setLastPageApi] = useState(false);
+    const [lastPage, setLastPage] = useState(1);
 
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: 'Movie List',
             headerRight: () => (
                 <TouchableOpacity onPress={() => {navigation.navigate('Favorites')}}>
-                    <Text>Favorite</Text>
+                    <Favorite stroke={'#FFFFFF'} />
                 </TouchableOpacity>
             ),
         });
@@ -22,16 +27,48 @@ const MovieListScreen = ({navigation}) => {
         getMovie();
     }, []);
 
-    const getMovie = () => {
-        let url = `${BASE_URL}movie/popular?api_key=${API_KEY}`;
+    const getMovie = (page = 1, loadMore = false) => {
+        setLoading(!loadMore);
+        let url = `${BASE_URL}movie/popular?api_key=${API_KEY}&page=${page}`;
         axios
             .get(url)
             .then(response => {
                 setMovies(response.data.results);
+                if (loadMore === true) {
+                    setMovies(movies.concat(response.data.results));
+                } else {
+                    setMovies(response.data.results);
+                }
+                if (response.data.count === 0) {
+                    setLastPageApi(true);
+                }
+                setLoading(false);
+                setLastPage(page);
+                setNextPageLoading(false);
             })
             .catch(error => {
                 console.log(error);
             });
+    }
+
+    const loadMore = async () => {
+        if (!lastPageApi) {
+            setNextPageLoading(true);
+            getMovie(lastPage + 1, true);
+        }
+    };
+
+    const renderFooter = () => {
+        if (!nextPageLoading) {
+            return null;
+        }
+        return (
+            <ActivityIndicator
+                size={'large'}
+                color={'#FFFFFF'}
+                style={styles.activityIndicator}
+            />
+        );
     }
 
     return (
@@ -50,6 +87,9 @@ const MovieListScreen = ({navigation}) => {
                         onPressFavorite={() => console.log('likeee')}
                     />
                 )}
+                onEndReached={loadMore}
+                onEndReachedThreshold={Platform.OS === 'ios' ? 0 : 5}
+                ListFooterComponent={renderFooter()}
             />
         </View>
     );
@@ -61,8 +101,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         backgroundColor: '#000000',
     },
-    listContainer: {
-
+    listContainer: {},
+    activityIndicator: {
+        marginTop: 10,
+        color: '#FFFFFF',
     },
 });
 

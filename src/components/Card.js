@@ -5,7 +5,7 @@ import FavoriteButton from "./FavoriteButton";
 
 const Card = ({title, overview, poster_path,  onPress, onPressFavorite}) => {
     return(
-        <TouchableOpacity onPress={onPress} style={styles.card}>
+        <TouchableOpacity activeOpacity={1} onPress={onPress} style={styles.card}>
             <View style={styles.container}>
                 <Text style={styles.titleText}>{title}</Text>
                 <View style={styles.line} />
