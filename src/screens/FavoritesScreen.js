@@ -2,8 +2,19 @@ import React from "react";
 import {FlatList, StyleSheet, Text, View} from "react-native";
 import {connect} from "react-redux";
 import Card from "../components/Card";
+import {addFavorites, deleteFavorites} from "../actions/counterActions";
 
-const FavoritesScreen = ({favorites}) => {
+const FavoritesScreen = ({navigation, favorites, addFavorites, deleteFavorites}) => {
+
+    const handleAddFavorite = (item) => {
+        item.selected=!item.selected;
+        if(item.selected) {
+            addFavorites(item);
+        } else {
+            deleteFavorites(item.id);
+        }
+    }
+
     return (
         <View style={styles.container}>
             <FlatList
@@ -17,7 +28,8 @@ const FavoritesScreen = ({favorites}) => {
                         {...item}
                         key={index}
                         onPress={() => navigation.navigate('MovieDetail', {id: item.id})}
-                        onPressFavorite={() => console.log('likeee')}
+                        onPressFavorite={() => handleAddFavorite(item)}
+                        fill={item.selected ? '#000000' : 'none'}
                     />
                 )}
             />
@@ -40,4 +52,6 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-export default connect(mapStateToProps)(FavoritesScreen);
+const mapDispatchToProps = {addFavorites, deleteFavorites};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FavoritesScreen);

@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {IMAGE_URL} from '../config';
 import FavoriteButton from "./FavoriteButton";
 
-const Card = ({title, overview, poster_path,  onPress, onPressFavorite}) => {
+const Card = ({title, overview, poster_path,  onPress, fill, onPressFavorite}) => {
     return(
         <TouchableOpacity activeOpacity={1} onPress={onPress} style={styles.card}>
             <View style={styles.container}>
@@ -12,7 +12,7 @@ const Card = ({title, overview, poster_path,  onPress, onPressFavorite}) => {
                 <Text numberOfLines={3} style={styles.descriptionText}>{overview}</Text>
             </View>
             <Image source={{uri: `${IMAGE_URL}${poster_path}`}} style={styles.image} />
-            <FavoriteButton style={styles.favoriteButton} onPress={onPressFavorite} />
+            <FavoriteButton fill={fill} style={styles.favoriteButton} onPress={onPressFavorite} />
         </TouchableOpacity>
     );
 }

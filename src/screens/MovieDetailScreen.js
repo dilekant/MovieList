@@ -4,20 +4,22 @@ import {API_KEY, BASE_URL, IMAGE_URL} from "../config";
 import axios from "axios";
 import FavoriteButton from "../components/FavoriteButton";
 import Star from "../icons/Star";
-import Arrow from "../icons/Arrow";
+import {addFavorites, deleteFavorites} from "../actions/counterActions";
+import {connect} from "react-redux";
 
-const MovieDetailScreen = ({navigation, route}) => {
+const MovieDetailScreen = ({navigation, route, favorites, addFavorites, deleteFavorites}) => {
     const scrollRef = useRef();
     const [detail, setDetail] = useState([]);
     const [images, setImages] = useState([]);
     const [index, setIndex] = useState(0);
+    const [isFavorite, setIsFavorite] = useState(false);
 
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTransparent: true,
-            headerRight: () => <FavoriteButton onPress={() => console.log('likeee')} />,
+            headerRight: () => <FavoriteButton fill={isFavorite ? '#000000' : 'none'} onPress={() => handleAddFavorite()} />,
         });
-    }, [navigation]);
+    }, [navigation, detail, isFavorite]);
 
     useEffect(() => {
         getDetail();
@@ -30,6 +32,9 @@ const MovieDetailScreen = ({navigation, route}) => {
             .get(url)
             .then(response => {
                 setDetail(response.data);
+                if(favorites.filter(favorite => favorite.id === response.data.id).length !== 0) {
+                    setIsFavorite(true);
+                }
             })
             .catch(error => {
                 console.log(error);
@@ -42,7 +47,6 @@ const MovieDetailScreen = ({navigation, route}) => {
             .get(url)
             .then(response => {
                 setImages(response.data.backdrops);
-                console.log(response.data.backdrops.length);
             })
             .catch(error => {
                 console.log(error);
@@ -60,22 +64,16 @@ const MovieDetailScreen = ({navigation, route}) => {
         });
     };
 
-    const pressLeft = () => {
-        setIndex(index - 1);
-        scrollRef.current?.scrollTo({
-            x: (index - 1) * width,
-            y: 0,
-            animated: true,
-        });
-    }
-
-    const pressRight = () => {
-        setIndex(index + 1);
-        scrollRef.current?.scrollTo({
-            x: (index + 1) * width,
-            y: 0,
-            animated: true,
-        });
+    const handleAddFavorite = () => {
+        if(isFavorite) {
+            setIsFavorite(false);
+            detail.selected = false;
+            deleteFavorites(detail.id);
+        } else {
+            setIsFavorite(true);
+            detail.selected = true;
+            addFavorites(detail);
+        }
     }
 
     return (
@@ -102,16 +100,6 @@ const MovieDetailScreen = ({navigation, route}) => {
                         );
                     })}
                 </ScrollView>
-                {index !== 0 &&
-                    <TouchableOpacity style={styles.arrowLeft} onPress={() => pressLeft()}>
-                        <Arrow width={30} height={30} stroke={'#FFFFFF'} />
-                    </TouchableOpacity>
-                }
-                {images.length - 1 !== index &&
-                    <TouchableOpacity style={styles.arrowRight} onPress={() => pressRight()}>
-                        <Arrow style={styles.rightIcon} width={30} height={30} stroke={'#FFFFFF'} />
-                    </TouchableOpacity>
-                }
             </View>
             <View style={styles.content}>
                 <View style={styles.infoContainer}>
@@ -134,6 +122,14 @@ const MovieDetailScreen = ({navigation, route}) => {
         </View>
     );
 }
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        favorites: state.counterReducer.favorites,
+    }
+}
+
+const mapDispatchToProps = {addFavorites, deleteFavorites};
 
 const {width, height} = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -221,4 +217,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MovieDetailScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(MovieDetailScreen);

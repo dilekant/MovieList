@@ -2,10 +2,10 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import Favorite from "../icons/Favorite";
 
-const FavoriteButton = ({style, onPress}) => {
+const FavoriteButton = ({style, fill, onPress}) => {
     return(
         <TouchableOpacity onPress={onPress} style={[styles.favoriteButton, style]}>
-            <Favorite width={15} height={15} stroke={'#000000'} />
+            <Favorite fill={fill} width={15} height={15} stroke={'#000000'} />
         </TouchableOpacity>
     );
 }

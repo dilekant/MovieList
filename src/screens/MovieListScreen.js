@@ -70,9 +70,12 @@ const MovieListScreen = ({navigation, favorites, addFavorites, deleteFavorites})
     }
 
     const handleAddFavorite = (item) => {
-        item.check != !item.check;
-        addFavorites(item);
-        //deleteFavorites(id);
+        item.selected=!item.selected;
+        if(item.selected) {
+            addFavorites(item);
+        } else {
+            deleteFavorites(item.id);
+        }
     }
 
     return (
@@ -87,8 +90,9 @@ const MovieListScreen = ({navigation, favorites, addFavorites, deleteFavorites})
                     <Card
                         {...item}
                         key={index}
-                        onPress={() => navigation.navigate('MovieDetail', {id: item.id})}
+                        onPress={() => navigation.navigate('MovieDetail', {id: item.id, selected: item.selected})}
                         onPressFavorite={() => handleAddFavorite(item)}
+                        fill={item.selected ? '#000000' : 'none'}
                     />
                 )}
                 onEndReached={loadMore}
