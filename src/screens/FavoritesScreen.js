@@ -7,11 +7,11 @@ import {addFavorites, deleteFavorites} from "../actions/counterActions";
 const FavoritesScreen = ({navigation, favorites, addFavorites, deleteFavorites}) => {
 
     const handleAddFavorite = (item) => {
-        item.selected=!item.selected;
-        if(item.selected) {
-            addFavorites(item);
-        } else {
+        const selected = favorites.filter(favorite => favorite.id === item.id).length !== 0;
+        if(selected) {
             deleteFavorites(item.id);
+        } else {
+            addFavorites(item);
         }
     }
 
@@ -29,7 +29,7 @@ const FavoritesScreen = ({navigation, favorites, addFavorites, deleteFavorites})
                         key={index}
                         onPress={() => navigation.navigate('MovieDetail', {id: item.id})}
                         onPressFavorite={() => handleAddFavorite(item)}
-                        fill={item.selected ? '#000000' : 'none'}
+                        fill={favorites.filter(favorite => favorite.id === item.id).length !== 0 ? '#000000' : 'none'}
                     />
                 )}
             />

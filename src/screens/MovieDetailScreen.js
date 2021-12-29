@@ -67,11 +67,9 @@ const MovieDetailScreen = ({navigation, route, favorites, addFavorites, deleteFa
     const handleAddFavorite = () => {
         if(isFavorite) {
             setIsFavorite(false);
-            detail.selected = false;
             deleteFavorites(detail.id);
         } else {
             setIsFavorite(true);
-            detail.selected = true;
             addFavorites(detail);
         }
     }
