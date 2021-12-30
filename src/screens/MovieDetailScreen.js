@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 const MovieDetailScreen = ({navigation, route}) => {
     const scrollRef = useRef();
     const dispatch = useDispatch();
-    const favorites = useSelector(state => state.counterReducer.favorites);
+    const { favorites } = useSelector(state => state.counterReducer);
     const [detail, setDetail] = useState([]);
     const [images, setImages] = useState([]);
     const [index, setIndex] = useState(0);

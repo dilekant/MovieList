@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 const MovieListScreen = ({navigation}) => {
     const dispatch = useDispatch();
-    const favorites = useSelector(state => state.counterReducer.favorites);
+    const { favorites } = useSelector(state => state.counterReducer);
     const [movies, setMovies] = useState([]);
     const [nextPageLoading, setNextPageLoading] = useState(false);
     const [lastPageApi, setLastPageApi] = useState(false);

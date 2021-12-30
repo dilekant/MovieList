@@ -5,7 +5,7 @@ import Card from "../components/Card";
 import {addFavorites, deleteFavorites} from "../actions/counterActions";
 
 const FavoritesScreen = ({navigation}) => {
-    const favorites = useSelector(state => state.counterReducer.favorites);
+    const { favorites } = useSelector(state => state.counterReducer);
     const dispatch = useDispatch();
 
     const handleAddFavorite = (item) => {
