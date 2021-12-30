@@ -3,6 +3,7 @@ import {FlatList, StyleSheet, View} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 import Card from "../components/Card";
 import {addFavorites, deleteFavorites} from "../redux/actions/favoritesActions";
+import {notifier} from "../utils/notifier";
 
 const FavoritesScreen = ({navigation}) => {
     const { favorites } = useSelector(state => state.favoritesReducer);
@@ -12,8 +13,10 @@ const FavoritesScreen = ({navigation}) => {
         const selected = favorites.some(favorite => favorite.id === item.id);
         if(selected) {
             dispatch(deleteFavorites(item.id));
+            notifier('Success', 'Successfully removed from your favorites', 'success');
         } else {
             dispatch(addFavorites(item));
+            notifier('Success', 'Successfully added to your favorites', 'success');
         }
     }
 

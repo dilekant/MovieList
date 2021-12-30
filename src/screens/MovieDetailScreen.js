@@ -6,6 +6,7 @@ import FavoriteButton from "../components/FavoriteButton";
 import Star from "../icons/Star";
 import {addFavorites, deleteFavorites} from "../redux/actions/favoritesActions";
 import {useDispatch, useSelector} from "react-redux";
+import {notifier} from "../utils/notifier";
 
 const MovieDetailScreen = ({navigation, route}) => {
     const scrollRef = useRef();
@@ -48,7 +49,13 @@ const MovieDetailScreen = ({navigation, route}) => {
         axios
             .get(url)
             .then(response => {
-                setImages(response.data.backdrops);
+                let backdrops = [];
+                response.data.backdrops.map((i, k) => {
+                    if(k < 5) {
+                        backdrops.push(i);
+                    }
+                });
+                setImages(backdrops);
             })
             .catch(error => {
                 console.log(error);
@@ -70,9 +77,11 @@ const MovieDetailScreen = ({navigation, route}) => {
         if(isFavorite) {
             setIsFavorite(false);
             dispatch(deleteFavorites(detail.id));
+            notifier('Success', 'Successfully removed from your favorites', 'success');
         } else {
             setIsFavorite(true);
             dispatch(addFavorites(detail));
+            notifier('Success', 'Successfully added to your favorites', 'success');
         }
     }
 
@@ -88,8 +97,8 @@ const MovieDetailScreen = ({navigation, route}) => {
                     onMomentumScrollEnd={(e) => {
                         const {contentOffset} = e.nativeEvent;
                         const viewSize = e.nativeEvent.layoutMeasurement;
-                        const pageNum = parseInt(contentOffset.x / viewSize.width);
-                        setIndex(pageNum);
+                        const pageNum = contentOffset.x / viewSize.width;
+                        setIndex(Math.round(pageNum));
                     }}
                 >
                     {images.map((i, k) => {
@@ -102,6 +111,15 @@ const MovieDetailScreen = ({navigation, route}) => {
                 </ScrollView>
             </View>
             <View style={styles.content}>
+                <View style={styles.circleContainer}>
+                    <ScrollView horizontal={true}>
+                        {images.map((i, k) => {
+                            return(
+                                <View key={k} style={[styles.circle, {backgroundColor: index === k ? 'white' : '#555353'}]} />
+                            );
+                        })}
+                    </ScrollView>
+                </View>
                 <View style={styles.infoContainer}>
                     <Image source={{uri: `${IMAGE_URL}${detail?.poster_path}`}} style={styles.imagePoster} />
                     <View style={styles.textContainer}>
@@ -168,7 +186,7 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     content: {
-        marginTop: 220,
+        marginTop: 200,
         paddingHorizontal: 20,
     },
     infoContainer: {
@@ -206,6 +224,18 @@ const styles = StyleSheet.create({
     descText: {
         marginTop: 20,
         color: '#555353',
+    },
+    circleContainer: {
+        marginTop: 10,
+        marginBottom: 25,
+        alignItems: 'center',
+    },
+    circle: {
+        height: 10,
+        width: 10,
+        borderRadius: 10 / 2,
+        backgroundColor: 'white',
+        marginHorizontal: 5,
     },
 });
 

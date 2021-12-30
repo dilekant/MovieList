@@ -6,6 +6,7 @@ import {API_KEY, BASE_URL} from "../config";
 import Favorite from "../icons/Favorite";
 import {addFavorites, deleteFavorites} from '../redux/actions/favoritesActions';
 import {useDispatch, useSelector} from "react-redux";
+import {notifier} from "../utils/notifier";
 
 const MovieListScreen = ({navigation}) => {
     const dispatch = useDispatch();
@@ -75,8 +76,10 @@ const MovieListScreen = ({navigation}) => {
         const selected = favorites.some(favorite => favorite.id === item.id);
         if(selected) {
             dispatch(deleteFavorites(item.id));
+            notifier('Success', 'Successfully removed from your favorites', 'success');
         } else {
             dispatch(addFavorites(item));
+            notifier('Success', 'Successfully added to your favorites', 'success');
         }
     }
 
