@@ -1,5 +1,5 @@
 import React from "react";
-import {FlatList, StyleSheet, View} from "react-native";
+import {FlatList, StyleSheet, Text, View} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 import Card from "../components/Card";
 import {addFavorites, deleteFavorites} from "../redux/actions/favoritesActions";
@@ -22,22 +22,28 @@ const FavoritesScreen = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <FlatList
-                data={favorites}
-                style={styles.listContainer}
-                numColumns={1}
-                showsVerticalScrollIndicator={false}
-                keyExtractor={(item) => item.id}
-                renderItem={({item, index}) => (
-                    <Card
-                        {...item}
-                        key={index}
-                        onPress={() => navigation.navigate('MovieDetail', {id: item.id})}
-                        onPressFavorite={() => handleAddFavorite(item)}
-                        fill={favorites.some(favorite => favorite.id === item.id) ? '#000000' : 'none'}
-                    />
-                )}
-            />
+            {favorites.length === 0 ?
+                <View style={styles.notFavoritesContainer}>
+                    <Text style={styles.notFavoritesText}>Your favorite list is empty</Text>
+                </View>
+            :
+                <FlatList
+                    data={favorites}
+                    style={styles.listContainer}
+                    numColumns={1}
+                    showsVerticalScrollIndicator={false}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({item, index}) => (
+                        <Card
+                            {...item}
+                            key={index}
+                            onPress={() => navigation.navigate('MovieDetail', {id: item.id})}
+                            onPressFavorite={() => handleAddFavorite(item)}
+                            fill={favorites.some(favorite => favorite.id === item.id) ? '#000000' : 'none'}
+                        />
+                    )}
+                />
+            }
         </View>
     );
 }
@@ -49,6 +55,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#000000',
     },
     listContainer: {},
+    notFavoritesContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    notFavoritesText: {
+        color: '#555353',
+        fontSize: 18,
+        fontWeight: '500',
+        textAlign: 'center',
+    },
 });
 
 export default FavoritesScreen;

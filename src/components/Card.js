@@ -20,20 +20,20 @@ const Card = ({title, overview, poster_path,  onPress, fill, onPressFavorite}) =
 const styles = StyleSheet.create({
     card: {
         width: '100%',
-        height: 185,
+        height: 190,
         marginTop: 20,
         borderRadius: 8,
     },
     image: {
         marginLeft: 15,
         position: 'absolute',
-        height: 175,
-        width: 120,
+        height: 180,
+        width: 125,
     },
     container: {
         backgroundColor: '#555353',
         borderRadius: 5,
-        height: 150,
+        height: 155,
         marginTop:  35,
         paddingLeft: 160,
         paddingRight: 15,
