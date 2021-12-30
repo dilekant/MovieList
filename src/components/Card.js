@@ -7,7 +7,7 @@ const Card = ({title, overview, poster_path,  onPress, fill, onPressFavorite}) =
     return(
         <TouchableOpacity activeOpacity={1} onPress={onPress} style={styles.card}>
             <View style={styles.container}>
-                <Text style={styles.titleText}>{title}</Text>
+                <Text numberOfLines={2} style={styles.titleText}>{title}</Text>
                 <View style={styles.line} />
                 <Text numberOfLines={3} style={styles.descriptionText}>{overview}</Text>
             </View>
