@@ -4,13 +4,13 @@ import {API_KEY, BASE_URL, IMAGE_URL} from "../config";
 import axios from "axios";
 import FavoriteButton from "../components/FavoriteButton";
 import Star from "../icons/Star";
-import {addFavorites, deleteFavorites} from "../actions/counterActions";
+import {addFavorites, deleteFavorites} from "../redux/actions/favoritesActions";
 import {useDispatch, useSelector} from "react-redux";
 
 const MovieDetailScreen = ({navigation, route}) => {
     const scrollRef = useRef();
     const dispatch = useDispatch();
-    const { favorites } = useSelector(state => state.counterReducer);
+    const { favorites } = useSelector(state => state.favoritesReducer);
     const [detail, setDetail] = useState([]);
     const [images, setImages] = useState([]);
     const [index, setIndex] = useState(0);

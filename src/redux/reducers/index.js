@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux';
-import counterReducer from './counterReducer';
+import favoritesReducer from './favoritesReducer';
 
 const reducers = combineReducers({
-    counterReducer,
+    favoritesReducer,
 });
 
 export default reducers;

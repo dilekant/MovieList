@@ -4,7 +4,7 @@ const initialState = {
     favorites: []
 };
 
-const counterReducer = (state = initialState, action) => {
+const favoritesReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_FAVORITES:
             return {
@@ -21,4 +21,4 @@ const counterReducer = (state = initialState, action) => {
     }
 };
 
-export default counterReducer;
+export default favoritesReducer;

@@ -5,10 +5,10 @@ import MovieListScreen from './src/screens/MovieListScreen';
 import MovieDetailScreen from './src/screens/MovieDetailScreen';
 import FavoritesScreen from './src/screens/FavoritesScreen';
 import {Provider} from "react-redux";
-import configureStore from "./src/reducers/configureStore";
+import Store from "./src/redux/store";
 
 const Stack = createNativeStackNavigator();
-const store = configureStore();
+const store = Store();
 
 function App() {
   return (

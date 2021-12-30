@@ -4,12 +4,12 @@ import axios from "axios";
 import Card from "../components/Card";
 import {API_KEY, BASE_URL} from "../config";
 import Favorite from "../icons/Favorite";
-import {addFavorites, deleteFavorites} from '../actions/counterActions';
+import {addFavorites, deleteFavorites} from '../redux/actions/favoritesActions';
 import {useDispatch, useSelector} from "react-redux";
 
 const MovieListScreen = ({navigation}) => {
     const dispatch = useDispatch();
-    const { favorites } = useSelector(state => state.counterReducer);
+    const { favorites } = useSelector(state => state.favoritesReducer);
     const [movies, setMovies] = useState([]);
     const [nextPageLoading, setNextPageLoading] = useState(false);
     const [lastPageApi, setLastPageApi] = useState(false);

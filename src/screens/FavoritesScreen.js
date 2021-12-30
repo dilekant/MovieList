@@ -2,10 +2,10 @@ import React from "react";
 import {FlatList, StyleSheet, View} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 import Card from "../components/Card";
-import {addFavorites, deleteFavorites} from "../actions/counterActions";
+import {addFavorites, deleteFavorites} from "../redux/actions/favoritesActions";
 
 const FavoritesScreen = ({navigation}) => {
-    const { favorites } = useSelector(state => state.counterReducer);
+    const { favorites } = useSelector(state => state.favoritesReducer);
     const dispatch = useDispatch();
 
     const handleAddFavorite = (item) => {
