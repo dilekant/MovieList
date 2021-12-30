@@ -5,9 +5,11 @@ import Card from "../components/Card";
 import {API_KEY, BASE_URL} from "../config";
 import Favorite from "../icons/Favorite";
 import {addFavorites, deleteFavorites} from '../actions/counterActions';
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
-const MovieListScreen = ({navigation, favorites, addFavorites, deleteFavorites}) => {
+const MovieListScreen = ({navigation}) => {
+    const dispatch = useDispatch();
+    const favorites = useSelector(state => state.counterReducer.favorites);
     const [movies, setMovies] = useState([]);
     const [nextPageLoading, setNextPageLoading] = useState(false);
     const [lastPageApi, setLastPageApi] = useState(false);
@@ -72,9 +74,9 @@ const MovieListScreen = ({navigation, favorites, addFavorites, deleteFavorites})
     const handleAddFavorite = (item) => {
         const selected = favorites.some(favorite => favorite.id === item.id);
         if(selected) {
-            deleteFavorites(item.id);
+            dispatch(deleteFavorites(item.id));
         } else {
-            addFavorites(item);
+            dispatch(addFavorites(item));
         }
     }
 
@@ -117,12 +119,4 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        favorites: state.counterReducer.favorites,
-    }
-}
-
-const mapDispatchToProps = {addFavorites, deleteFavorites};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MovieListScreen);
+export default MovieListScreen;

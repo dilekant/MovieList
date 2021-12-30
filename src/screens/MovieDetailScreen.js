@@ -1,14 +1,16 @@
 import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
-import {Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, View, TouchableOpacity} from "react-native";
+import {Dimensions, Image, ScrollView, StyleSheet, Text, View, TouchableOpacity} from "react-native";
 import {API_KEY, BASE_URL, IMAGE_URL} from "../config";
 import axios from "axios";
 import FavoriteButton from "../components/FavoriteButton";
 import Star from "../icons/Star";
 import {addFavorites, deleteFavorites} from "../actions/counterActions";
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
-const MovieDetailScreen = ({navigation, route, favorites, addFavorites, deleteFavorites}) => {
+const MovieDetailScreen = ({navigation, route}) => {
     const scrollRef = useRef();
+    const dispatch = useDispatch();
+    const favorites = useSelector(state => state.counterReducer.favorites);
     const [detail, setDetail] = useState([]);
     const [images, setImages] = useState([]);
     const [index, setIndex] = useState(0);
@@ -67,10 +69,10 @@ const MovieDetailScreen = ({navigation, route, favorites, addFavorites, deleteFa
     const handleAddFavorite = () => {
         if(isFavorite) {
             setIsFavorite(false);
-            deleteFavorites(detail.id);
+            dispatch(deleteFavorites(detail.id));
         } else {
             setIsFavorite(true);
-            addFavorites(detail);
+            dispatch(addFavorites(detail));
         }
     }
 
@@ -120,14 +122,6 @@ const MovieDetailScreen = ({navigation, route, favorites, addFavorites, deleteFa
         </View>
     );
 }
-
-const mapStateToProps = (state, ownProps) => {
-    return {
-        favorites: state.counterReducer.favorites,
-    }
-}
-
-const mapDispatchToProps = {addFavorites, deleteFavorites};
 
 const {width, height} = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -215,4 +209,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MovieDetailScreen);
+export default MovieDetailScreen;

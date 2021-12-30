@@ -1,17 +1,19 @@
 import React from "react";
-import {FlatList, StyleSheet, Text, View} from "react-native";
-import {connect} from "react-redux";
+import {FlatList, StyleSheet, View} from "react-native";
+import {useDispatch, useSelector} from "react-redux";
 import Card from "../components/Card";
 import {addFavorites, deleteFavorites} from "../actions/counterActions";
 
-const FavoritesScreen = ({navigation, favorites, addFavorites, deleteFavorites}) => {
+const FavoritesScreen = ({navigation}) => {
+    const favorites = useSelector(state => state.counterReducer.favorites);
+    const dispatch = useDispatch();
 
     const handleAddFavorite = (item) => {
         const selected = favorites.some(favorite => favorite.id === item.id);
         if(selected) {
-            deleteFavorites(item.id);
+            dispatch(deleteFavorites(item.id));
         } else {
-            addFavorites(item);
+            dispatch(addFavorites(item));
         }
     }
 
@@ -46,12 +48,4 @@ const styles = StyleSheet.create({
     listContainer: {},
 });
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        favorites: state.counterReducer.favorites,
-    }
-}
-
-const mapDispatchToProps = {addFavorites, deleteFavorites};
-
-export default connect(mapStateToProps, mapDispatchToProps)(FavoritesScreen);
+export default FavoritesScreen;
