@@ -32,7 +32,7 @@ const MovieDetailScreen = ({navigation, route, favorites, addFavorites, deleteFa
             .get(url)
             .then(response => {
                 setDetail(response.data);
-                if(favorites.filter(favorite => favorite.id === response.data.id).length !== 0) {
+                if(favorites.some(favorite => favorite.id === response.data.id)) {
                     setIsFavorite(true);
                 }
             })
