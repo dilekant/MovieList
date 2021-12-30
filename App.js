@@ -16,7 +16,7 @@ function App() {
       <NotifierWrapper>
           <Provider store={store}>
               <NavigationContainer>
-                  <Stack.Navigator screenOptions={{headerTitleAlign: 'center', headerTintColor: '#ffffff'}}>
+                  <Stack.Navigator screenOptions={{headerTitleAlign: 'center', headerTintColor: '#ffffff', headerBackTitleVisible: false}}>
                       <Stack.Screen name="MovieList" component={MovieListScreen} options={{title: 'Movie List', headerStyle: {backgroundColor: 'red'} }} />
                       <Stack.Screen name="MovieDetail" component={MovieDetailScreen} options={{title: null, headerShadowVisible: false}} />
                       <Stack.Screen name="Favorites" component={FavoritesScreen} options={{headerStyle: {backgroundColor: 'red'}}} />
