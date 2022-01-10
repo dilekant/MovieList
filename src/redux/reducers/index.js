@@ -2,7 +2,7 @@ import {combineReducers} from 'redux';
 import favoritesReducer from './favoritesReducer';
 
 const reducers = combineReducers({
-    favoritesReducer,
+  favoritesReducer,
 });
 
 export default reducers;
